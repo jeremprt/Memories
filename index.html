@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+   
+<html>
+    <head>
+        <title>Memories</title>
+        <link href="style.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>The Memory Game</h1>
+
+        <table id ="CardB">
+        <tr>
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        <td> <img src="img/img/Card.jpg"> </td> 
+        </tr>
+        <tr>
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            <td> <img src="img/img/Card.jpg"> </td> 
+            </tr>
+        </table>
+        <div>
+        <a  value="Reload Page" onClick="window.location.reload()">Recommencer</a>
+      </div>
+
+
+</script>
+
+        <script>
+var CardFront=[1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9];//pour avoir les nums des images
+var State= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //etats des cartes 0=dos 1=face et -1=disparue
+var TurnedCards=[];//liste vide avec les cartes retournées
+var ValidCards=0;//nombre de paires validées/trouvées
+var imgCards=document.getElementById("CardB").getElementsByTagName("img");//recup les img affichées
+
+for(var i=0;i<imgCards.length;i++){//boucle init i=0, tant qu'on a pas lu tout imgCards, avec 1 de pas pour parcourir tout le tableau
+	imgCards[i].numCard=i; //ajoute le numéro numCard à l'objet img
+	imgCards[i].onclick=function(){//la fameuse fonction click
+		Game(this.numCard);
+	}                      
+}
+
+initGame();//appelle la fonction pour melanger les cartes
+
+function majAffichage(numCard){//fonction qui va gérer l'affichage des cartes
+	switch(State[numCard]){//on utilise switch pour gerer les différentes conditions en fonction de l'action click
+		case 0:
+			imgCards[numCard].src="img/img/Card.jpg";//si State=0 on revient sur le dos donc Card
+			break;
+		case 1:
+			imgCards[numCard].src="img/img/Card"+CardFront[numCard]+".jpg";//Si State=1 on passe sur l'image+son numéro pour avoir une Card face visible
+			break;
+		case -1:
+			imgCards[numCard].style.visibility="hidden";
+			break;
+	}
+}
+
+function initGame(){//fonction pour melanger les cartes
+	for(var position=CardFront.length-1; position>=1; position--){
+		var hasard=Math.floor(Math.random()*(position+1));//Math.floor arrondi a la valeur du dessus
+		var sauve=CardFront[position];
+		CardFront[position]=CardFront[hasard];
+		CardFront[hasard]=sauve;
+	}
+}
+
+function Game(numCard){//le truc principal pour gérer le jeu
+	if(TurnedCards.length<2){//condition pour ne pas avoir plus de 2 cartes retournées en meme temps
+        if(State[numCard]==0){//quand on click passe a l'etat 1 et ajouté a TurnedCards
+			State[numCard]=1;
+			TurnedCards.push(numCard);
+			majAffichage(numCard);
+		}
+        if(TurnedCards.length==2){//quand on a les 2 cartes retournées, on verif si elle match ou pas
+			var newState=0;
+			if(CardFront[TurnedCards[0]]==CardFront[TurnedCards[1]]){
+				newState=-1;
+				ValidCards++;
+			}
+
+			State[TurnedCards[0]]=newState; 
+			State[TurnedCards[1]]=newState;
+            setTimeout(function(){//pour gerer le temps d'affichage des cartes pour que le jeu soit un minimum lisible
+				majAffichage(TurnedCards[0]);
+				majAffichage(TurnedCards[1]);
+				TurnedCards=[];
+			},1000);//temps 1000ms pour au moins voir les cartes
+
+
+		}
+	}
+}
+        </script>
+    </body>
+</html>

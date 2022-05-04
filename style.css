@@ -1,0 +1,42 @@
+img
+{
+    width: 150px;
+    height: 200px;
+    margin-left: 13px;
+    margin-top: 50px;
+    cursor: pointer;
+}
+body
+{
+    background-color:  #438f60;
+
+}
+h1
+{
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-family: arial;
+}
+div
+{   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 700px;
+    margin-top: 50px;
+    height: 40px;
+    width: 100px;
+    border: solid 2px white;
+    border-radius: 10px;
+    background-color: #de4653;
+}
+a
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    
+}
